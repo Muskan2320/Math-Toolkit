@@ -1,4 +1,11 @@
 {
+  "name": "web-math-toolkit",
+  "version": "1.0.0",
+  "type": "module",
+  "main": "server.mjs",
+  "scripts": {
+    "start": "node server.mjs"
+  },
   "dependencies": {
     "express": "^5.1.0"
   }
