@@ -16,6 +16,16 @@ app.post('/calculate', (req, res) => {
     const a = Number(num1);
     const b = Number(num2);
 
+    console.log(`Received operation: ${operation}, num1: ${a}, num2: ${b}`);
+
+    if (isNaN(a)) {
+        return res.status(400).json({ error: 'Invalid first number provided' });
+    }
+
+    if (operation !== "square" && isNaN(b)) {
+        return res.status(400).json({ error: 'Invalid second number provided' });
+    }
+
     let result;
     switch (operation) {
         case 'add': result = add(a, b); break;
