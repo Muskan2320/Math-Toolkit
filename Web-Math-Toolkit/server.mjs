@@ -1,6 +1,9 @@
 import express from 'express';
 import path from 'path';
 
+import { PrismaClient } from '@prisma/client';
+const prisma = new PrismaClient();
+
 import { fileURLToPath } from 'url';
 import { add, subtract, multiply, divide, square } from './math.mjs';
 
@@ -11,7 +14,7 @@ const app = express();
 app.use(express.json());
 app.use(express.static(path.join(__dirname, 'public')));
 
-app.post('/calculate', (req, res) => {
+app.post('/calculate', async (req, res) => {
     const { operation, num1, num2 } = req.body;
     const a = Number(num1);
     const b = Number(num2);
@@ -31,17 +34,40 @@ app.post('/calculate', (req, res) => {
         case 'add': result = add(a, b); break;
         case 'subtract': result = subtract(a, b); break;
         case 'multiply': result = multiply(a, b); break;
-        case 'divide': result = divide(a, b); break;
+        case 'divide': 
+            result = divide(a, b); 
+            if (typeof result !== 'number'){
+                return res.status(400).json({error: result});
+            }
+            break;
         case 'square': result = square(a); break;
         default: return res.status(400).json({error: 'Invalid operation'});
     }
 
-    res.json({
-        "operation": operation,
-        "number 1": a,
-        "number 2": b,
-        "result": result
+    await prisma.calculation.create({
+        data: {
+            operation,
+            num1: a,
+            num2: operation === "square" ? null : b,
+            result,
+        },
     });
+
+    res.json({
+        operation,
+        num1: a,
+        num2: operation === "square" ? null : b,
+        result,
+    });
+});
+
+app.get('/history', async (req, res) => {
+    const history = await prisma.calculation.findMany({
+        orderBy: {createdAt: 'desc'},
+        take: 5,
+    });
+
+    res.json(history);
 });
 
 app.listen(3000, () => console.log('Web Math toolkit running on http://localhost:3000'));
