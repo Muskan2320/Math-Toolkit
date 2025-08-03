@@ -1,6 +1,7 @@
 window.addEventListener("DOMContentLoaded", () => {
     handleOperationChange();
     document.getElementById("operation").addEventListener("change", handleOperationChange);
+    loadHistory();
 })
 
 function handleOperationChange() {
@@ -11,6 +12,24 @@ function handleOperationChange() {
         num2Group.style.display = "none";
     } else {
         num2Group.style.display = "block";
+    }
+}
+
+function formatCalculation(entry) {
+    const { operation, num1, num2, result } = entry;
+    const opMap = {
+        add: "+",
+        subtract: "−",
+        multiply: "×",
+        divide: "÷",
+        square: "^2"
+    };
+
+    if (operation === "square") {
+        return `square(${num1}) = ${result}`;
+    } else {
+        const symbol = opMap[operation] || operation;
+        return `${num1} ${symbol} ${num2} = ${result}`;
     }
 }
 
@@ -48,4 +67,23 @@ async function calculate() {
 
     const data = await res.json();
     document.getElementById("result").innerText = data.result !== undefined ? `Result: ${data.result}` : `Error: ${data.error}`;
+
+    if (data.result !== undefined) {
+        loadHistory();
+    }
+
+}
+
+async function loadHistory() {
+    const res = await fetch("/history");
+    const data = await res.json();
+
+    const historyList = document.getElementById("history");
+    historyList.innerHTML = "";
+
+    data.forEach(entry => {
+        const item = document.createElement("li");
+        item.textContent = formatCalculation(entry);
+        historyList.appendChild(item);
+    });
 }
