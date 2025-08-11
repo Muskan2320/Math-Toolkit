@@ -16,8 +16,8 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 app.post('/calculate', async (req, res) => {
     const { operation, num1, num2 } = req.body;
-    const a = Number(num1);
-    const b = Number(num2);
+    const a = parseFloat(String(num1).replace(/^\./, "0."));
+    const b = parseFloat(String(num2).replace(/^\./, "0."));
 
     console.log(`Received operation: ${operation}, num1: ${a}, num2: ${b}`);
 

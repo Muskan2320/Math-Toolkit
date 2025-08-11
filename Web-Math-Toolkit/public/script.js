@@ -38,7 +38,7 @@ async function calculate() {
     const num1 = document.getElementById("num1").value.trim();
     const num2 = document.getElementById("num2").value.trim();
 
-    const isValidNumber = (n) => /^-?\d+(\.\d+)?$/.test(n);
+    const isValidNumber = (n) => /^-?(?:\d+\.?\d*|\.\d+)$/.test(n);
 
     if (!isValidNumber(num1)){
         document.getElementById("result").innerText = "Please enter a valid first number.";
