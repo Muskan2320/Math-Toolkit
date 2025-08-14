@@ -1,27 +1,32 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
     <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Web Math Toolkit</title>
+    <link rel="stylesheet" href="style.css">
 </head>
 <body>
     <h1>Welcome to the Web Math Toolkit</h1>
-    <select id="operation">
-        <option value="add">Addition</option>
-        <option value="subtract">Subtraction</option>
-        <option value="multiply">Multiplication</option>
-        <option value="divide">Division</option>
-        <option value="square">Square</option>
-    </select><br>
 
-    <input type="number" id="num1" placeholder="Enter first number"><br>
+    <div class="card">
+        <select id="operation">
+            <option value="add">Addition</option>
+            <option value="subtract">Subtraction</option>
+            <option value="multiply">Multiplication</option>
+            <option value="divide">Division</option>
+            <option value="square">Square</option>
+        </select>
+
+        <input type="number" id="num1" placeholder="Enter first number"><br>
     
-    <div id="num2-group">
-        <input type="number" id="num2" placeholder="Second number">
-    </div><br>
+        <div id="num2-group">
+            <input type="number" id="num2" placeholder="Second number">
+        </div>
     
-    <button onclick="calculate()">Calculate</button>
-    <div id="result"></div>
+        <button onclick="calculate()">Calculate</button>
+        <div id="result"></div>
+    </div>
 
     <h2>History</h2>
     <ul id="history"></ul>
